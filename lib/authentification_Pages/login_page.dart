@@ -117,10 +117,25 @@ class _LoginScreenState extends State<LoginScreen> {
                   SizedBox(height: 50),
                   loginButton,
                   // give space between boxes, images or other stuff in the page
-                  SizedBox(height: 45),
+                  SizedBox(height: 15),
+                  // SignUp
+                  // below login button: add message for not having an account yet and a SignUp that redirects user to register page
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[],
+                    children: <Widget>[
+                      Text("Don't have an account?"),
+                      // this will detect when an user will click on it
+                      GestureDetector(
+                        onTap: () {},
+                        child: Text(
+                          " SignUp",
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
                   )
                 ],
               ),
