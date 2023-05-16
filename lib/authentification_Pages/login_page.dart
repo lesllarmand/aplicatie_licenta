@@ -1,4 +1,4 @@
-// ignore_for_file: unnecessary_new, avoid_unnecessary_containers, prefer_const_constructors
+// ignore_for_file: unnecessary_new, avoid_unnecessary_containers, prefer_const_constructors, sort_child_properties_last
 
 import 'package:flutter/material.dart';
 
@@ -49,6 +49,7 @@ class _LoginScreenState extends State<LoginScreen> {
     // create password field
     final passwordField = TextFormField(
       controller: passwordController,
+      obscureText: true,
       autofocus: false,
       //validator: () {},
       onSaved: (value) {
@@ -66,16 +67,63 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
 
+    // after entering email and password for an existing account, have a button that logs the user into that account
+    final loginButton = Material(
+      color: Colors.greenAccent,
+      elevation: 5,
+      borderRadius: BorderRadius.circular(25),
+      child: MaterialButton(
+        onPressed: () {},
+        child: Text(
+          "Login",
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 15.5),
+        ),
+        padding: EdgeInsets.fromLTRB(21, 16, 21, 16),
+        //minWidth: MediaQuery.of(context).size.width,
+      ),
+    );
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
         child: SingleChildScrollView(
             child: Container(
           color: Colors.white,
-          child: Form(
-            key: _formKey,
-            child: Column(
-              children: <Widget>[emailField, passwordField],
+          child: Padding(
+            padding: const EdgeInsets.all(50.0),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  // add the logo of the application when the user wants to login
+                  SizedBox(
+                    // this is the actual size of the logo ( how big or how small it is )
+                    height: 230,
+                    child: Image.asset(
+                      "assets/attractiveServiceLogo.png",
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                  // give space between boxes, images or other stuff in the page
+                  SizedBox(height: 40),
+                  emailField,
+                  // give space between boxes, images or other stuff in the page
+                  SizedBox(height: 22),
+                  passwordField,
+                  // give space between boxes, images or other stuff in the page
+                  SizedBox(height: 50),
+                  loginButton,
+                  // give space between boxes, images or other stuff in the page
+                  SizedBox(height: 45),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[],
+                  )
+                ],
+              ),
             ),
           ),
         )),
