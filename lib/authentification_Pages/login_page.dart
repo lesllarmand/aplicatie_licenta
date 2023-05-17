@@ -1,6 +1,7 @@
 // ignore_for_file: unnecessary_new, avoid_unnecessary_containers, prefer_const_constructors, sort_child_properties_last
 
 import 'package:flutter/material.dart';
+import 'package:service_now/authentification_Pages/registration_page.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -86,10 +87,12 @@ class _LoginScreenState extends State<LoginScreen> {
 
     return Scaffold(
       backgroundColor: Colors.white,
+      // backgroundColor: Color.fromRGBO(131, 133, 187, 133),
       body: Center(
         child: SingleChildScrollView(
             child: Container(
           color: Colors.white,
+          //color: Color.fromARGB(131, 133, 187, 133),
           child: Padding(
             padding: const EdgeInsets.all(50.0),
             child: Form(
@@ -101,7 +104,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   // add the logo of the application when the user wants to login
                   SizedBox(
                     // this is the actual size of the logo ( how big or how small it is )
-                    height: 230,
+                    height: 215,
                     child: Image.asset(
                       "assets/attractiveServiceLogo.png",
                       fit: BoxFit.contain,
@@ -126,12 +129,19 @@ class _LoginScreenState extends State<LoginScreen> {
                       Text("Don't have an account?"),
                       // this will detect when an user will click on it
                       GestureDetector(
-                        onTap: () {},
+                        // this should redirect the user to the registration page, whenever he clicks the SignUp text
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => RegisterScreen()));
+                        },
                         child: Text(
                           " SignUp",
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
+                            color: Colors.green,
                           ),
                         ),
                       ),
