@@ -41,6 +41,12 @@ class _LoginScreenState extends State<LoginScreen> {
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(15),
         ),
+        /*change color of borders when the email field is clicked
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+          borderSide: BorderSide(color: Colors.green.shade700, width: 1.7),
+        ),
+        */
         prefixIcon: Icon(Icons.mail),
         hintText: "Email",
         contentPadding: EdgeInsets.fromLTRB(21, 16, 21, 16),
@@ -86,6 +92,20 @@ class _LoginScreenState extends State<LoginScreen> {
     );
 
     return Scaffold(
+      // THIS IS USED TO REMOVE THE SPACE BETWEEN THE APPBAR and the BODY
+      extendBodyBehindAppBar: true,
+      // create an appBar which will contain a functional button to go back
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        // arrow button to redirect to previous page
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_rounded, color: Colors.green),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ),
       backgroundColor: Colors.white,
       // backgroundColor: Color.fromRGBO(131, 133, 187, 133),
       body: Center(

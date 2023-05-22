@@ -1,4 +1,4 @@
-// ignore_for_file: unnecessary_new, unused_field, unused_local_variable, prefer_const_constructors
+// ignore_for_file: unnecessary_new, unused_field, unused_local_variable, prefer_const_constructors, sort_child_properties_last
 
 import 'package:flutter/material.dart';
 
@@ -13,7 +13,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 // form key
   final _formKey = GlobalKey<FormState>();
 
-// editing controllers for fistName, lastName, email, password and confirmPassword
+// editing controllers for firstName, lastName, email, password and confirmPassword
   final firstNameController = new TextEditingController();
   final lastNameController = new TextEditingController();
   final emailController = new TextEditingController();
@@ -36,7 +36,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       // create an input action - definition: an input action is when a user clicks on the email field and on the
       // right bottom side of the keyboard there will be an option of clicking next.
       textInputAction: TextInputAction.next,
-      // design for the email field
+      // design for the first name field
       decoration: InputDecoration(
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(15),
@@ -57,7 +57,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         lastNameController.text = value!;
       },
       textInputAction: TextInputAction.next,
-      // design for the password field
+      // design for the last name field
       decoration: InputDecoration(
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(15),
@@ -122,7 +122,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         confirmPasswordController.text = value!;
       },
       textInputAction: TextInputAction.done,
-      // design for the password field
+      // design for the confirm password field
       decoration: InputDecoration(
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(15),
@@ -133,9 +133,40 @@ class _RegisterScreenState extends State<RegisterScreen> {
       ),
     );
 
+    // button for SignUp after entering the required information to create an account
+    final registerButton = Material(
+      color: Colors.greenAccent,
+      elevation: 5,
+      borderRadius: BorderRadius.circular(25),
+      child: MaterialButton(
+        onPressed: () {},
+        child: Text(
+          "Sign Up",
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 15.5),
+        ),
+        padding: EdgeInsets.fromLTRB(21, 16, 21, 16),
+        //minWidth: MediaQuery.of(context).size.width,
+      ),
+    );
+
     return Scaffold(
+      // THIS IS USED TO REMOVE THE SPACE BETWEEN THE APPBAR and the BODY
+      extendBodyBehindAppBar: true,
+      // create an appBar which will contain a functional button to go back
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        // arrow button to redirect to previous page
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_rounded, color: Colors.green),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ),
+      // added this so that the appbar has the same color as the body
       backgroundColor: Colors.white,
-      // backgroundColor: Color.fromRGBO(131, 133, 187, 133),
       body: Center(
         child: SingleChildScrollView(
             child: Container(
@@ -149,7 +180,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  // add the logo of the application when the user wants to login
+                  SizedBox(height: 20),
+                  //add the logo of the application when the user wants to create a new account
                   SizedBox(
                     // this is the actual size of the logo ( how big or how small it is )
                     height: 210,
@@ -174,8 +206,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   SizedBox(height: 22),
                   confirmPasswordField,
                   // give space between boxes, images or other stuff in the page
-                  SizedBox(height: 55),
-                  // SignUp
+                  SizedBox(height: 30),
+                  registerButton,
+                  // give space between boxes, images or other stuff in the page
+                  //SizedBox(height: 50)
+                  // TO DO
                   // below login button: add message for not having an account yet and a SignUp that redirects user to register page
                 ],
               ),
