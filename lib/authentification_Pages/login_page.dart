@@ -1,5 +1,6 @@
 // ignore_for_file: unnecessary_new, avoid_unnecessary_containers, prefer_const_constructors, sort_child_properties_last
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:service_now/authentification_Pages/registration_page.dart';
 
@@ -19,6 +20,9 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController emailController = new TextEditingController();
   final TextEditingController passwordController = new TextEditingController();
 
+  //calling our firebase
+  final _authLogin = FirebaseAuth.instance;
+
   // inside this widget I have created the email and password fields (functionalities + design for each one)
   @override
   Widget build(BuildContext context) {
@@ -28,7 +32,17 @@ class _LoginScreenState extends State<LoginScreen> {
       controller: emailController,
       autofocus: false,
       keyboardType: TextInputType.emailAddress,
-      //validator: () {},
+      // this validator will have a value that will be later used in some if conditions
+      validator: (value) {
+        if (value!.isEmpty) {
+          return ("Please enter your Email address!");
+        }
+        // RegExp for email validation --> desired format for an email to be considered valid
+        if (!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]").hasMatch(value)) {
+          return ("Please enter an valid Email address!");
+        }
+        return null;
+      },
       // this onSaved function will be saving the value whenever a user types in something
       onSaved: (value) {
         emailController.text = value!;

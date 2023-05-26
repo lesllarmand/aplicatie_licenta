@@ -17,7 +17,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
     // create buttons so that the user will have options to choose from:
     // login, create account or signUp via facebook, gmail etc..
     //
-    // crate account button which will redirect the user tot the register page
+    // create account button which will redirect the user to the register page
     final createAccountButton = Material(
       color: Colors.greenAccent,
       elevation: 5,
