@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:service_now/authentification_Pages/login_page.dart';
 import 'package:service_now/authentification_Pages/registration_page.dart';
 
-class HomePageScreen extends StatefulWidget {
-  const HomePageScreen({super.key});
+class WelcomePageScreen extends StatefulWidget {
+  const WelcomePageScreen({super.key});
 
   @override
-  State<HomePageScreen> createState() => _HomePageScreenState();
+  State<WelcomePageScreen> createState() => _WelcomePageScreenState();
 }
 
-class _HomePageScreenState extends State<HomePageScreen> {
+class _WelcomePageScreenState extends State<WelcomePageScreen> {
   @override
   Widget build(BuildContext context) {
     // create buttons so that the user will have options to choose from:

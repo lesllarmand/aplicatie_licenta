@@ -1,7 +1,11 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:service_now/authentification_Pages/homepage.dart';
+import 'package:service_now/authentification_Pages/welcome_page.dart';
 
-void main() {
+void main() async {
+  // since we use Firebase in our application, we need to initialize it
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -26,7 +30,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.green,
       ),
-      home: const HomePageScreen(),
+      home: const WelcomePageScreen(),
     );
   }
 }

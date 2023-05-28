@@ -1,8 +1,11 @@
-// ignore_for_file: unnecessary_new, avoid_unnecessary_containers, prefer_const_constructors, sort_child_properties_last
+// ignore_for_file: unnecessary_new, avoid_unnecessary_containers, prefer_const_constructors, sort_child_properties_last, body_might_complete_normally_catch_error, avoid_print
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:service_now/User_Logged_In/homepage.dart';
 import 'package:service_now/authentification_Pages/registration_page.dart';
+import 'package:service_now/Utils/showSnackBar.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -39,7 +42,7 @@ class _LoginScreenState extends State<LoginScreen> {
         }
         // RegExp for email validation --> desired format for an email to be considered valid
         if (!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]").hasMatch(value)) {
-          return ("Please enter an valid Email address!");
+          return ("Please enter a valid Email address!");
         }
         return null;
       },
@@ -55,24 +58,32 @@ class _LoginScreenState extends State<LoginScreen> {
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(15),
         ),
-        /*change color of borders when the email field is clicked
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(15),
-          borderSide: BorderSide(color: Colors.green.shade700, width: 1.7),
-        ),
-        */
         prefixIcon: Icon(Icons.mail),
         hintText: "Email",
         contentPadding: EdgeInsets.fromLTRB(21, 16, 21, 16),
       ),
     );
 
+    //
     // create password field
+    //
     final passwordField = TextFormField(
       controller: passwordController,
       obscureText: true,
       autofocus: false,
-      //validator: () {},
+      validator: (value) {
+        // I added this here so that the user MUST enter a password of minimum 6 characters.
+        RegExp regexp = new RegExp(r'^.{6,}$');
+        // if no password written, show message
+        if (value!.isEmpty) {
+          return ("Please enter your password!");
+        }
+        // if not enough characters for a valid password, show message
+        if (!regexp.hasMatch(value)) {
+          return ("Wrong format. Minimum 6 characters.");
+        }
+        return null;
+      },
       onSaved: (value) {
         passwordController.text = value!;
       },
@@ -94,7 +105,9 @@ class _LoginScreenState extends State<LoginScreen> {
       elevation: 5,
       borderRadius: BorderRadius.circular(25),
       child: MaterialButton(
-        onPressed: () {},
+        onPressed: () {
+          login(emailController.text, passwordController.text);
+        },
         child: Text(
           "Login",
           textAlign: TextAlign.center,
@@ -188,5 +201,75 @@ class _LoginScreenState extends State<LoginScreen> {
         )),
       ),
     );
+  }
+
+  // here I have my functions for this file
+  //
+  // login function
+  /*void login(String email, String password) async {
+    // we will execute what is inside the if condition only if the validation is ok
+    if (_formKey.currentState!.validate()) {
+      // try {
+      //   await FirebaseAuth.instance
+      //       .signInWithEmailAndPassword(email: email, password: password)
+      //       .then(
+      //         // if the login is succesfull we will parse the value uid - userd id
+      //         (uid) => {
+      //           Fluttertoast.showToast(msg: "Login was Succesfull !"),
+      //           Navigator.of(context).pushReplacement(
+      //             MaterialPageRoute(builder: (context) => HomePage()),
+      //           )
+      //         },
+      //       );
+      // } on FirebaseAuthException catch (e) {
+      //   if (e.code == 'user-not-found') {
+      //     print('No user found for that email.');
+      //   } else if (e.code == 'wrong-password') {
+      //     print('Wrong password for this user.');
+      //   }
+      //   print(e.message);
+      // }
+      await _authLogin
+          .signInWithEmailAndPassword(email: email, password: password)
+          .then((uid) => {
+                Fluttertoast.showToast(msg: "Login was Succesfull !"),
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (context) => HomePage())),
+              })
+          .catchError((e) {
+        Fluttertoast.showToast(msg: e!.message);
+      });
+    }
+  }
+*/
+  void login(String email, String password) async {
+    try {
+      await _authLogin
+          .signInWithEmailAndPassword(
+            email: email,
+            password: password,
+          )
+          .then(
+              // if the login is succesfull we will parse the value uid - userd id
+              (uid) => {
+                    Fluttertoast.showToast(msg: "Login was Succesfull !"),
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (context) => HomePage()),
+                    )
+                  });
+    } on FirebaseAuthException catch (e) {
+      if (e.message == 'Given String is empty or null') {
+        showSnackBar(context, 'Please fill in all the required fields!');
+      } else if (e.message ==
+          'There is no user record corresponding to this identifier. The user may have been deleted.') {
+        showSnackBar(context, 'This email is not registered !');
+      } else if (e.message ==
+          'The password is invalid or the user does not have a password.') {
+        showSnackBar(context,
+            'The password is not correct. Please try again or change the password!');
+      } else {
+        showSnackBar(context, e.message!); // Displaying the error message
+      }
+    }
   }
 }
