@@ -1,6 +1,12 @@
-// ignore_for_file: unnecessary_new, unused_field, unused_local_variable, prefer_const_constructors, sort_child_properties_last
+// ignore_for_file: unnecessary_new, unused_field, unused_local_variable, prefer_const_constructors, sort_child_properties_last, unrelated_type_equality_checks
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:service_now/Models/user_model.dart';
+import 'package:service_now/User_Logged_In/homepage.dart';
+import 'package:service_now/Utils/showSnackBar.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -20,6 +26,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final passwordController = new TextEditingController();
   final confirmPasswordController = new TextEditingController();
 
+  //calling our firebase
+  final _authRegister = FirebaseAuth.instance;
+
   @override
   Widget build(BuildContext context) {
     //
@@ -28,7 +37,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
       controller: firstNameController,
       autofocus: false,
       keyboardType: TextInputType.name,
-      //validator: () {},
+      validator: (value) {
+        // I added this here so that the user MUST enter a password of minimum 6 characters.
+        RegExp regexp = new RegExp(r'^.{3,}$');
+        // if no password written, show message
+        if (value!.isEmpty) {
+          return ("First name can't be empty!");
+        }
+        // if not enough characters for a valid password, show message
+        if (!regexp.hasMatch(value)) {
+          return ("Not a valid name. Minimum 3 characters.");
+        }
+        return null;
+      },
       // this onSaved function will be saving the value whenever a user types in something
       onSaved: (value) {
         firstNameController.text = value!;
@@ -52,7 +73,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
       controller: lastNameController,
       keyboardType: TextInputType.name,
       autofocus: false,
-      //validator: () {},
+      validator: (value) {
+        // I added this here so that the user MUST enter a password of minimum 6 characters.
+        RegExp regexp = new RegExp(r'^.{1,}$');
+        // if no password written, show message
+        if (value!.isEmpty) {
+          return ("Second name can't be empty!");
+        }
+        // if not enough characters for a valid password, show message
+        if (!regexp.hasMatch(value)) {
+          return ("Not a valid name. Minimum 1 character.");
+        }
+        return null;
+      },
       onSaved: (value) {
         lastNameController.text = value!;
       },
@@ -73,7 +106,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
       controller: emailController,
       autofocus: false,
       keyboardType: TextInputType.emailAddress,
-      //validator: () {},
+      // this validator will have a value that will be later used in some if conditions
+      validator: (value) {
+        if (value!.isEmpty) {
+          return ("Please enter your Email address!");
+        }
+        // RegExp for email validation --> desired format for an email to be considered valid
+        if (!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]").hasMatch(value)) {
+          return ("Please enter a valid Email address!");
+        }
+        return null;
+      },
       // this onSaved function will be saving the value whenever a user types in something
       onSaved: (value) {
         emailController.text = value!;
@@ -96,7 +139,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
       controller: passwordController,
       obscureText: true,
       autofocus: false,
-      //validator: () {},
+      validator: (value) {
+        // I added this here so that the user MUST enter a password of minimum 6 characters.
+        RegExp regexp = new RegExp(r'^.{6,}$');
+        // if no password written, show message
+        if (value!.isEmpty) {
+          return ("Please enter your password!");
+        }
+        // if not enough characters for a valid password, show message
+        if (!regexp.hasMatch(value)) {
+          return ("Wrong format. Minimum 6 characters.");
+        }
+        return null;
+      },
       onSaved: (value) {
         passwordController.text = value!;
       },
@@ -117,7 +172,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
       controller: confirmPasswordController,
       obscureText: true,
       autofocus: false,
-      //validator: () {},
+      validator: (value) {
+        if (confirmPasswordController.text != passwordController.text) {
+          return "Passwords don't match !";
+        }
+        return null;
+      },
       onSaved: (value) {
         confirmPasswordController.text = value!;
       },
@@ -139,14 +199,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
       elevation: 5,
       borderRadius: BorderRadius.circular(25),
       child: MaterialButton(
-        onPressed: () {},
+        onPressed: () {
+          signUp(emailController.text, passwordController.text);
+        },
         child: Text(
           "Sign Up",
           textAlign: TextAlign.center,
           style: TextStyle(fontSize: 15.5),
         ),
         padding: EdgeInsets.fromLTRB(21, 16, 21, 16),
-        //minWidth: MediaQuery.of(context).size.width,
       ),
     );
 
@@ -219,5 +280,54 @@ class _RegisterScreenState extends State<RegisterScreen> {
         )),
       ),
     );
+  }
+
+  void signUp(String email, String password) async {
+    if (_formKey.currentState!.validate()) {
+      try {
+        await _authRegister
+            .createUserWithEmailAndPassword(
+              email: email,
+              password: password,
+            )
+            .then(
+                // if the register is succesfull we will store the value uid - userd id
+                (value) => {postNewRegistrationToFirestore()});
+      } on FirebaseAuthException catch (e) {
+        if (e.message == 'Given String is empty or null') {
+          showSnackBar(context, 'Please fill in all the required fields!');
+        } else if (e.message ==
+            ' The given password is invalid. [ Password should be at least 6 characters ]') {
+          showSnackBar(
+              context, 'The password must have at least 6 characters !');
+        } else {
+          showSnackBar(context, e.message!); // Displaying the error message
+        }
+      }
+    }
+  }
+
+  postNewRegistrationToFirestore() async {
+    // calling firestore, calling user model and then send these values
+
+    FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+    User? user = _authRegister.currentUser;
+
+    UserModel userModel = UserModel();
+
+    // write all the values to our DataBase
+    userModel.email = user!.email;
+    userModel.uid = user.uid;
+    userModel.firstName = firstNameController.text;
+    userModel.lastName = lastNameController.text;
+
+    await firebaseFirestore
+        .collection("users")
+        .doc(user.uid)
+        .set(userModel.toMap());
+    Fluttertoast.showToast(msg: "Account created successfully!");
+
+    Navigator.pushAndRemoveUntil((context),
+        MaterialPageRoute(builder: (context) => HomePage()), (route) => false);
   }
 }

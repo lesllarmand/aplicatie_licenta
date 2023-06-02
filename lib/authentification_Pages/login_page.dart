@@ -114,7 +114,6 @@ class _LoginScreenState extends State<LoginScreen> {
           style: TextStyle(fontSize: 15.5),
         ),
         padding: EdgeInsets.fromLTRB(21, 16, 21, 16),
-        //minWidth: MediaQuery.of(context).size.width,
       ),
     );
 
@@ -206,42 +205,6 @@ class _LoginScreenState extends State<LoginScreen> {
   // here I have my functions for this file
   //
   // login function
-  /*void login(String email, String password) async {
-    // we will execute what is inside the if condition only if the validation is ok
-    if (_formKey.currentState!.validate()) {
-      // try {
-      //   await FirebaseAuth.instance
-      //       .signInWithEmailAndPassword(email: email, password: password)
-      //       .then(
-      //         // if the login is succesfull we will parse the value uid - userd id
-      //         (uid) => {
-      //           Fluttertoast.showToast(msg: "Login was Succesfull !"),
-      //           Navigator.of(context).pushReplacement(
-      //             MaterialPageRoute(builder: (context) => HomePage()),
-      //           )
-      //         },
-      //       );
-      // } on FirebaseAuthException catch (e) {
-      //   if (e.code == 'user-not-found') {
-      //     print('No user found for that email.');
-      //   } else if (e.code == 'wrong-password') {
-      //     print('Wrong password for this user.');
-      //   }
-      //   print(e.message);
-      // }
-      await _authLogin
-          .signInWithEmailAndPassword(email: email, password: password)
-          .then((uid) => {
-                Fluttertoast.showToast(msg: "Login was Succesfull !"),
-                Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (context) => HomePage())),
-              })
-          .catchError((e) {
-        Fluttertoast.showToast(msg: e!.message);
-      });
-    }
-  }
-*/
   void login(String email, String password) async {
     try {
       await _authLogin
@@ -250,9 +213,9 @@ class _LoginScreenState extends State<LoginScreen> {
             password: password,
           )
           .then(
-              // if the login is succesfull we will parse the value uid - userd id
+              // if the login is successfull we will parse the value uid - userd id
               (uid) => {
-                    Fluttertoast.showToast(msg: "Login was Succesfull !"),
+                    Fluttertoast.showToast(msg: "Login was Successfull !"),
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(builder: (context) => HomePage()),
                     )
