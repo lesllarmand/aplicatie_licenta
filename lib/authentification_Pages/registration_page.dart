@@ -5,8 +5,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:service_now/Models/user_model.dart';
-import 'package:service_now/User_Logged_In/homepage.dart';
 import 'package:service_now/Utils/showSnackBar.dart';
+import 'package:service_now/authentification_Pages/login_page.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -327,7 +327,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
         .set(userModel.toMap());
     Fluttertoast.showToast(msg: "Account created successfully!");
 
-    Navigator.pushAndRemoveUntil((context),
-        MaterialPageRoute(builder: (context) => HomePage()), (route) => false);
+    Navigator.pushAndRemoveUntil(
+        (context),
+        MaterialPageRoute(builder: (context) => LoginScreen()),
+        (route) => false);
   }
 }
