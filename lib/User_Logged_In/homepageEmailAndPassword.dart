@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:service_now/Models/user_model.dart';
+import 'package:service_now/User_Logged_In/mainNavigationScreen.dart';
 import 'package:service_now/Utils/next_screen.dart';
 import 'package:service_now/authentification_Pages/welcome_page.dart';
 
@@ -41,6 +42,9 @@ class _HomePageEPState extends State<HomePageEP> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
+              const SizedBox(
+                height: 70,
+              ),
               SizedBox(
                 // this is the actual size of the logo ( how big or how small it is )
                 height: 190,
@@ -66,7 +70,21 @@ class _HomePageEPState extends State<HomePageEP> {
                     fontWeight: FontWeight.w500,
                   )),
               SizedBox(
-                height: 15,
+                height: 20,
+              ),
+              ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.orangeAccent, // Background color
+                  ),
+                  onPressed: () {
+                    nextScreen(context, const MainNavigationScreen());
+                  },
+                  child: const Text("NEXT",
+                      style: TextStyle(
+                        color: Colors.black,
+                      ))),
+              SizedBox(
+                height: 190,
               ),
               ElevatedButton(
                   style: ElevatedButton.styleFrom(
