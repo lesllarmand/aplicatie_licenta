@@ -229,7 +229,7 @@ class _LoginScreenState extends State<LoginScreen> {
       } else if (e.message ==
           'The password is invalid or the user does not have a password.') {
         showSnackBar(context,
-            'The password is not correct. Please try again or change the password!');
+            'The password is not correct. Please try again or Sign In with another method!');
       } else {
         showSnackBar(context, e.message!); // Displaying the error message
       }

@@ -8,6 +8,7 @@ import 'package:service_now/User_Logged_In/homepage.dart';
 import 'package:service_now/Utils/next_screen.dart';
 import 'package:service_now/Utils/snack_bar.dart';
 import 'package:service_now/authentification_Pages/login_page.dart';
+import 'package:service_now/authentification_Pages/phoneSignUp_page.dart';
 import 'package:service_now/authentification_Pages/registration_page.dart';
 import 'package:service_now/provider/internet_provider.dart';
 
@@ -21,11 +22,14 @@ class WelcomePageScreen extends StatefulWidget {
 }
 
 class _WelcomePageScreenState extends State<WelcomePageScreen> {
-  // google sign up button
+  // google sign in button
   final RoundedLoadingButtonController googleController =
       RoundedLoadingButtonController();
-
-  final RoundedLoadingButtonController facebookController =
+  // twitter sign in button
+  final RoundedLoadingButtonController twitterController =
+      RoundedLoadingButtonController();
+  // phone sign in button
+  final RoundedLoadingButtonController phoneController =
       RoundedLoadingButtonController();
 
   @override
@@ -110,9 +114,42 @@ class _WelcomePageScreenState extends State<WelcomePageScreen> {
                     //SizedBox(width: 45),
                   ],
                 ),
-                SizedBox(height: 200),
+                SizedBox(height: 170),
                 Column(
                   children: <Widget>[
+                    //
+                    // PHONE SIGN UP BUTTON
+                    //
+                    RoundedLoadingButton(
+                      onPressed: () {
+                        nextScreenReplace(context, const PhoneSignUpScreen());
+                        phoneController.reset();
+                      },
+                      controller: phoneController,
+                      successColor: Colors.black,
+                      width: MediaQuery.of(context).size.width * 0.80,
+                      elevation: 0,
+                      borderRadius: 25,
+                      color: Colors.black,
+                      child: Wrap(
+                        children: const [
+                          Icon(
+                            FontAwesomeIcons.phone,
+                            size: 20,
+                            color: Colors.white,
+                          ),
+                          SizedBox(
+                            width: 15,
+                          ),
+                          Text("Sign in with Phone",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w500)),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 15),
                     //
                     // GOOGLE SIGN UP BUTTON
                     //
@@ -146,29 +183,29 @@ class _WelcomePageScreenState extends State<WelcomePageScreen> {
                     ),
                     SizedBox(height: 15),
                     //
-                    // FACEBOOK SIGN UP BUTTON
+                    // TWITTER SIGN UP BUTTON
                     //
                     RoundedLoadingButton(
                       onPressed: () {
-                        //handleFacebookSignIn();
+                        handleTwitterSignIn();
                       },
-                      controller: facebookController,
-                      successColor: Colors.blue,
+                      controller: twitterController,
+                      successColor: Colors.lightBlue,
                       width: MediaQuery.of(context).size.width * 0.80,
                       elevation: 0,
                       borderRadius: 25,
-                      color: Colors.blue,
+                      color: Colors.lightBlue,
                       child: Wrap(
                         children: const [
                           Icon(
-                            FontAwesomeIcons.facebook,
+                            FontAwesomeIcons.twitter,
                             size: 20,
                             color: Colors.white,
                           ),
                           SizedBox(
                             width: 15,
                           ),
-                          Text("Sign in with Facebook",
+                          Text("Sign in with Twitter",
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 15,
@@ -205,7 +242,7 @@ class _WelcomePageScreenState extends State<WelcomePageScreen> {
         }
         // if there is no error
         else {
-          // check wether the user exists or not
+          // check whether the user exists or not
           sp.checkUserExists().then((value) async {
             if (value == true) {
               // user exists
@@ -221,6 +258,47 @@ class _WelcomePageScreenState extends State<WelcomePageScreen> {
                   .saveDataToSharedPreferences()
                   .then((value) => sp.setSignInUser().then((value) {
                         googleController.success();
+                        handleAfterUserSignIn();
+                      })));
+            }
+          });
+        }
+      });
+    }
+  }
+
+  // handling twitter auth
+  Future handleTwitterSignIn() async {
+    final sp = context.read<SignInProvider>();
+    final ip = context.read<InternetProvider>();
+    await ip.checkInternetConnection();
+
+    if (ip.hasInternet == false) {
+      openSnackbar(
+          context, "Check your Internet connection!", Colors.lightBlue);
+      googleController.reset();
+    } else {
+      await sp.signInWithTwitterProvider().then((value) {
+        if (sp.hasError == true) {
+          openSnackbar(context, sp.errorCode.toString(), Colors.lightBlue);
+          twitterController.reset();
+        } else {
+          // checking whether user exists or not
+          sp.checkUserExists().then((value) async {
+            if (value == true) {
+              // user exists
+              await sp.getUserDataFromFirestore(sp.uid).then((value) => sp
+                  .saveDataToSharedPreferences()
+                  .then((value) => sp.setSignInUser().then((value) {
+                        twitterController.success();
+                        handleAfterUserSignIn();
+                      })));
+            } else {
+              // user does not exist
+              sp.saveDataToFirestore().then((value) => sp
+                  .saveDataToSharedPreferences()
+                  .then((value) => sp.setSignInUser().then((value) {
+                        twitterController.success();
                         handleAfterUserSignIn();
                       })));
             }
