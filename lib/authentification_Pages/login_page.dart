@@ -3,9 +3,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:service_now/User_Logged_In/homepage.dart';
+import 'package:service_now/User_Logged_In/homepageEmailAndPassword.dart';
+import 'package:service_now/Utils/next_screen.dart';
 import 'package:service_now/authentification_Pages/registration_page.dart';
 import 'package:service_now/Utils/showSnackBar.dart';
+import 'package:service_now/authentification_Pages/welcome_page.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -126,11 +128,10 @@ class _LoginScreenState extends State<LoginScreen> {
         elevation: 0,
         // arrow button to redirect to previous page
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_rounded, color: Colors.green),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
+            icon: Icon(Icons.arrow_back_rounded, color: Colors.green),
+            onPressed: () {
+              nextScreenReplace(context, const WelcomePageScreen());
+            }),
       ),
       backgroundColor: Colors.white,
       // backgroundColor: Color.fromRGBO(131, 133, 187, 133),
@@ -217,7 +218,7 @@ class _LoginScreenState extends State<LoginScreen> {
               (uid) => {
                     Fluttertoast.showToast(msg: "Login was Successfull !"),
                     Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (context) => HomePage()),
+                      MaterialPageRoute(builder: (context) => HomePageEP()),
                     )
                   });
     } on FirebaseAuthException catch (e) {
