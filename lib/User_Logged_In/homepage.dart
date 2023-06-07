@@ -1,7 +1,8 @@
-// ignore_for_file: deprecated_member_use
+// ignore_for_file: deprecated_member_use, prefer_const_constructors
 
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
+import 'package:service_now/User_Logged_In/mainNavigationScreen.dart';
 import 'package:service_now/Utils/next_screen.dart';
 import 'package:service_now/authentification_Pages/welcome_page.dart';
 import 'package:service_now/provider/sign_in_provider.dart';
@@ -36,6 +37,9 @@ class _HomePageState extends State<HomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
+            const SizedBox(
+              height: 70,
+            ),
             SizedBox(
               // this is the actual size of the logo ( how big or how small it is )
               height: 190,
@@ -44,11 +48,6 @@ class _HomePageState extends State<HomePage> {
                 fit: BoxFit.contain,
               ),
             ),
-            // CircleAvatar(
-            //   backgroundColor: Colors.white,
-            //   backgroundImage: NetworkImage("${sp.imageUrl}"),
-            //   radius: 50,
-            // ),
             const SizedBox(
               height: 20,
             ),
@@ -66,7 +65,6 @@ class _HomePageState extends State<HomePage> {
             const SizedBox(
               height: 10,
             ),
-
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -79,22 +77,22 @@ class _HomePageState extends State<HomePage> {
                     style: const TextStyle(color: Colors.red)),
               ],
             ),
-            // const SizedBox(
-            //   height: 10,
-            // ),
-            // const Text("This is your unique user ID:"),
-            // const SizedBox(
-            //   height: 10,
-            // ),
-            // Text(
-            //   " ${sp.uid}",
-            //   style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
-            // ),
-            // const SizedBox(
-            //   height: 10,
-            // ),
             const SizedBox(
               height: 27,
+            ),
+            ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.orangeAccent, // Background color
+                ),
+                onPressed: () {
+                  nextScreen(context, const MainNavigationScreen());
+                },
+                child: const Text("NEXT",
+                    style: TextStyle(
+                      color: Colors.black,
+                    ))),
+            SizedBox(
+              height: 190,
             ),
             ElevatedButton(
                 style: ElevatedButton.styleFrom(
