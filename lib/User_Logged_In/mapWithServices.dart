@@ -20,7 +20,8 @@ const LatLng location_SkodaService =
 const LatLng location_VolkswagenService =
     LatLng(45.71738458490232, 21.19429261667287);
 const LatLng location_HyundaiService =
-    LatLng(45.71738458490232, 21.19429261667287);
+    LatLng(45.703804509844375, 21.18551514929515);
+const LatLng location_ToyotaService = LatLng(45.775602016907996, 21.3037432);
 
 class MapWithServiceImages extends StatefulWidget {
   const MapWithServiceImages({super.key});
@@ -56,6 +57,7 @@ class _MapWithServiceImagesState extends State<MapWithServiceImages> {
           addMarker('skodaService', location_SkodaService);
           addMarker('volkswagenService', location_VolkswagenService);
           addMarker('hyundaiService', location_HyundaiService);
+          addMarker('toyotaService', location_ToyotaService);
         },
         markers: _markers.values.toSet(),
       ),
@@ -78,6 +80,8 @@ class _MapWithServiceImagesState extends State<MapWithServiceImages> {
         const ImageConfiguration(), 'assets/volkswagenService_RESIZED.png');
     var markerIcon_Hyundai = await BitmapDescriptor.fromAssetImage(
         const ImageConfiguration(), 'assets/hyundaiService_RESIZED.png');
+    var markerIcon_Toyota = await BitmapDescriptor.fromAssetImage(
+        const ImageConfiguration(), 'assets/toyotaService_RESIZED.png');
 
     if (id == 'autoSchunn') {
       var marker_autoSchunn = Marker(
@@ -180,6 +184,19 @@ class _MapWithServiceImagesState extends State<MapWithServiceImages> {
         icon: markerIcon_Hyundai,
       );
       _markers[id] = marker_hyundaiService;
+      setState(() {});
+    }
+
+    if (id == 'toyotaService') {
+      var marker_toyotaService = Marker(
+        markerId: MarkerId(id),
+        position: location_ToyotaService,
+        infoWindow: const InfoWindow(
+          title: " Toyota Timișoara",
+        ),
+        icon: markerIcon_Toyota,
+      );
+      _markers[id] = marker_toyotaService;
       setState(() {});
     }
   }

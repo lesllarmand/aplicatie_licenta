@@ -75,6 +75,15 @@ flutter:
     - assets/skodaService_RESIZED.png
     - assets/volkswagenService_RESIZED.png
     - assets/hyundaiService_RESIZED.png
+    - assets/toyotaService_RESIZED.png
+    - assets/AMG_GT_63_fourDoorsModel_upcomingEvent.jpg
+    - assets/2023_bmw_i7.jpg
+    - assets/arteon.jpg
+    - assets/pressConference.jpg
+    - assets/nightCarMeeting.jpg
+    - assets/fordMustang.jpg
+    - assets/seatbeltTest.jpg
+
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
   # For details regarding adding assets from package dependencies, see

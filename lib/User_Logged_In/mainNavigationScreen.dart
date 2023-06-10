@@ -3,6 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:service_now/User_Logged_In/mapWithServices.dart';
+import 'package:service_now/User_Logged_In/settings.dart';
+import 'package:service_now/User_Logged_In/upcomingEventsScreen.dart';
 
 class MainNavigationScreen extends StatefulWidget {
   const MainNavigationScreen({super.key});
@@ -16,11 +18,11 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
 
   // a list of screens that I want to navigate through using the bottom navigation bar
   final List<Widget> _screens = [
+    UpcomingEventsScreen(),
     MapWithServiceImages(),
     MapWithServiceImages(),
     MapWithServiceImages(),
-    MapWithServiceImages(),
-    MapWithServiceImages()
+    SettingsPage()
   ];
   @override
   Widget build(BuildContext context) {
