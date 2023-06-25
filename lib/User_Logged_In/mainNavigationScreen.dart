@@ -2,8 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:service_now/User_Logged_In/appointments.dart';
 import 'package:service_now/User_Logged_In/mapWithServices.dart';
 import 'package:service_now/User_Logged_In/settings.dart';
+import 'package:service_now/User_Logged_In/storePage.dart';
 import 'package:service_now/User_Logged_In/upcomingEventsScreen.dart';
 
 class MainNavigationScreen extends StatefulWidget {
@@ -19,8 +21,8 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   // a list of screens that I want to navigate through using the bottom navigation bar
   final List<Widget> _screens = [
     UpcomingEventsScreen(),
-    MapWithServiceImages(),
-    MapWithServiceImages(),
+    Appointments(),
+    StorePage(),
     MapWithServiceImages(),
     SettingsPage()
   ];
@@ -42,8 +44,8 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
             text: 'Home',
           ),
           GButton(
-            icon: Icons.search_sharp,
-            text: 'Search',
+            icon: Icons.edit_calendar,
+            text: ' Free Dates',
           ),
           GButton(
             icon: Icons.shopping_cart_sharp,

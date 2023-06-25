@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:service_now/Models/cart_model.dart';
 import 'package:service_now/authentification_Pages/splash_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:service_now/provider/internet_provider.dart';
@@ -22,6 +23,7 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (context) => SignInProvider()),
         ChangeNotifierProvider(create: (context) => InternetProvider()),
+        ChangeNotifierProvider(create: (context) => CartModel()),
       ],
       child: MaterialApp(
         title: 'Authentification - Login and Register with email and password',

@@ -182,37 +182,6 @@ class _WelcomePageScreenState extends State<WelcomePageScreen> {
                       ),
                     ),
                     SizedBox(height: 15),
-                    //
-                    // TWITTER SIGN UP BUTTON
-                    //
-                    RoundedLoadingButton(
-                      onPressed: () {
-                        handleTwitterSignIn();
-                      },
-                      controller: twitterController,
-                      successColor: Colors.lightBlue,
-                      width: MediaQuery.of(context).size.width * 0.80,
-                      elevation: 0,
-                      borderRadius: 25,
-                      color: Colors.lightBlue,
-                      child: Wrap(
-                        children: const [
-                          Icon(
-                            FontAwesomeIcons.twitter,
-                            size: 20,
-                            color: Colors.white,
-                          ),
-                          SizedBox(
-                            width: 15,
-                          ),
-                          Text("Sign in with Twitter",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w500)),
-                        ],
-                      ),
-                    ),
                   ],
                 ),
                 //SizedBox(height: 10)
@@ -258,47 +227,6 @@ class _WelcomePageScreenState extends State<WelcomePageScreen> {
                   .saveDataToSharedPreferences()
                   .then((value) => sp.setSignInUser().then((value) {
                         googleController.success();
-                        handleAfterUserSignIn();
-                      })));
-            }
-          });
-        }
-      });
-    }
-  }
-
-  // handling twitter auth
-  Future handleTwitterSignIn() async {
-    final sp = context.read<SignInProvider>();
-    final ip = context.read<InternetProvider>();
-    await ip.checkInternetConnection();
-
-    if (ip.hasInternet == false) {
-      openSnackbar(
-          context, "Check your Internet connection!", Colors.lightBlue);
-      googleController.reset();
-    } else {
-      await sp.signInWithTwitterProvider().then((value) {
-        if (sp.hasError == true) {
-          openSnackbar(context, sp.errorCode.toString(), Colors.lightBlue);
-          twitterController.reset();
-        } else {
-          // checking whether user exists or not
-          sp.checkUserExists().then((value) async {
-            if (value == true) {
-              // user exists
-              await sp.getUserDataFromFirestore(sp.uid).then((value) => sp
-                  .saveDataToSharedPreferences()
-                  .then((value) => sp.setSignInUser().then((value) {
-                        twitterController.success();
-                        handleAfterUserSignIn();
-                      })));
-            } else {
-              // user does not exist
-              sp.saveDataToFirestore().then((value) => sp
-                  .saveDataToSharedPreferences()
-                  .then((value) => sp.setSignInUser().then((value) {
-                        twitterController.success();
                         handleAfterUserSignIn();
                       })));
             }
